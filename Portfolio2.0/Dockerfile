@@ -1,22 +1,15 @@
-#See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build-env
+WORKDIR /App
 
-FROM mcr.microsoft.com/dotnet/aspnet:5.0-buster-slim AS base
-WORKDIR /app
-EXPOSE 80
-EXPOSE 443
+# Copy everything
+COPY . ./
+# Restore as distinct layers
+RUN dotnet restore
+# Build and publish a release
+RUN dotnet publish -c Release -o out
 
-FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim AS build
-WORKDIR /src
-COPY ["Portfolio2.0/Portfolio2.0.csproj", "Portfolio2.0/"]
-RUN dotnet restore "Portfolio2.0/Portfolio2.0.csproj"
-COPY . .
-WORKDIR "/src/Portfolio2.0"
-RUN dotnet build "Portfolio2.0.csproj" -c Release -o /app/build
-
-FROM build AS publish
-RUN dotnet publish "Portfolio2.0.csproj" -c Release -o /app/publish
-
-FROM base AS final
-WORKDIR /app
-COPY --from=publish /app/publish .
+# Build runtime image
+FROM mcr.microsoft.com/dotnet/aspnet:6.0
+WORKDIR /App
+COPY --from=build-env /App/out .
 ENTRYPOINT ["dotnet", "Portfolio2.0.dll"]

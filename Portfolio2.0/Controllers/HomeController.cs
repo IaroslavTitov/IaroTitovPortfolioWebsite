@@ -5,21 +5,18 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 using Portfolio.Models;
 
 namespace Portfolio.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IConfiguration Config;
         private readonly StorageConnector storageConnector;
+        private const string PORTFOLIO_CONNECTION_STRING = "PortfolioStorage";
 
         public HomeController(IConfiguration config)
         {
-            Config = config;
-            string connectionString = Config["PortfolioApp:Connections:PortfolioStorage"];
-            connectionString = connectionString != null ? connectionString : Config["Heroku:PortfolioStorage"];
+            string connectionString = config[PORTFOLIO_CONNECTION_STRING] ?? Environment.GetEnvironmentVariable(PORTFOLIO_CONNECTION_STRING);
             storageConnector = new StorageConnector(connectionString);
         }
 
