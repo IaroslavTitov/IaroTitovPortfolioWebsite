@@ -10,9 +10,10 @@ The website contains 3 pages:
 - Projects - a gallery that showcases my projects with photos and videos, as well as links to source code and downloads
 
 # Technical explanation
-The website is built using ASP.NET, so the backend is written in C#, with some Javascript on the frontend.
-The website is containerized and uploaded to AWS ECR, then hosted on AWS AppRunner. 
-The website dynamically retrieves data from Azure Tables and Blob Storage, allowing me to adjust my skills and add new projects without redeploying the website itself.
+The website is built using `ASP.NET`, so the backend is written in `C#`, with some `Javascript` on the frontend.
+The website is containerized and uploaded to `AWS ECR`, then hosted on `AWS AppRunner`. 
+The website dynamically retrieves data from `Azure Tables` and `Azure Blob Storage`, allowing me to adjust my skills and add new projects without redeploying the website itself.
+The graph on the main page uses `vis.js` and animations use `anime.js` libraries. 
 
 Feel free to fork this website and use for your own portfolio!
 
@@ -24,6 +25,8 @@ Feel free to fork this website and use for your own portfolio!
 - Azure Tables
 - Azure Blob Storage
 - Docker
+- vis.js
+- anime.js
 
 ## Deployment process
 
